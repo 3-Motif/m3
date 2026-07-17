@@ -1,0 +1,255 @@
+* {
+  box-sizing: border-box;
+}
+.small-font {
+  font-family:
+    ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 0.75rem;
+}
+
+body {
+  margin: 0;
+  max-height: 100svh;
+  /* overflow-y: hidden; */
+  position: relative;
+  background-color: #f0ffff;
+  font-family: "Martel Sans", sans-serif;
+}
+h1,
+h3,
+p {
+  margin: 0;
+}
+
+.file-upload-container {
+  position: absolute;
+  background-color: #f0ffff;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.file-upload {
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  gap: 5px;
+}
+
+.file-upload label {
+  cursor: pointer;
+  border: 2px dashed #798eac;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  margin: 0.5rem 0;
+}
+
+.file-upload label svg {
+  height: 100px;
+  width: 100px;
+  color: #435e84;
+}
+
+.file-upload input[type="file"] {
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+.file-upload .info {
+  background: #435e84;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  color: #f0f6ff;
+  margin: 0;
+  font-family: sans-serif;
+  font-weight: 360;
+  font-size: 0.4rem;
+  margin-bottom: 2rem;
+}
+
+.file-upload > p {
+  text-align: center;
+}
+
+.footer-links {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: #435e84;
+}
+
+.loader-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+.loader {
+  background: #eeeeee;
+  padding: 0rem 4rem;
+  padding-bottom: 1rem;
+  border-radius: 3px;
+  box-shadow: 1px 1px 6px 0px #7a7a7a3d;
+}
+.loader svg {
+  color: #435e84;
+}
+.loader-container p {
+  font-size: 1.2rem;
+  margin-top: -2rem;
+}
+
+.branding {
+  margin-bottom: 2rem;
+}
+.branding h1 {
+  font-family: "Bitcount Prop Single", system-ui;
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 2rem;
+  color: #777777;
+}
+.branding p {
+  color: #767676;
+}
+.file-info {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+.file-info p {
+  font-size: 1rem;
+  font-weight: 300;
+  color: #797979;
+  line-height: 1rem;
+}
+.file-info h3 {
+  line-height: 1.5;
+}
+.network-stat {
+  padding-left: 0.5rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  height: 100%;
+}
+.graph-info {
+  background: #dbdbe48f;
+  padding: 1.5rem;
+  min-width: 400px;
+}
+
+.subgraphs-container {
+  background-color: #dbdbe48f;
+  width: 100%;
+  padding: 1.5rem;
+  text-align: center;
+  max-width: 650px;
+}
+.subgraphs-container .section-heading {
+  display: inline-block;
+  padding-bottom: 5px;
+  border-bottom: 1px solid black;
+  min-width: 300px;
+}
+
+.subgraphs {
+  margin-top: 1rem;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(4, minmax(100px, 1fr));
+  gap: 0.5rem;
+}
+
+.subgraph {
+  position: relative;
+  background-color: #c0c0c059;
+  border-radius: 5px;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.subgraph-no {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-left: 0.5rem;
+  padding-top: 0.25rem;
+  color: #a0a0a0;
+}
+
+.subgraph-image {
+  max-width: 100px;
+}
+
+.subgraph-stat {
+  margin-top: 1rem;
+}
+
+svg .node {
+  fill: cadetblue;
+}
+svg .edge,
+svg .arrow-head {
+  stroke: darkslategray;
+}
+svg .arrow-head {
+  fill: darkslategray;
+}
+
+.action-bar {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+button {
+  padding: 1rem 1.5rem;
+  background-color: #dac293;
+  border-radius: 4px;
+  border: none;
+  color: #161b20;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #e5cd9d;
+  transition: all 0.2s ease-in-out;
+}
+button:disabled,
+button:disabled:hover {
+  background-color: #d8d8d8;
+  cursor: not-allowed;
+  color: #929291;
+}

@@ -1,0 +1,409 @@
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M3 | A 3-node Motif finder</title>
+  <meta name="description" content="An webapp for enumerating 3-node motifs from a given graph/network." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single:wght@100..900&family=Martel+Sans:wght@200;300;400;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <section id="loader" class="loader-container">
+    <div class="loader">
+      <svg viewBox="0 60 120 80">
+        <circle fill="currentColor" stroke="currentColor" stroke-width="10" r="5" cx="20" cy="100">
+          <animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1"
+            repeatCount="indefinite" begin="-.4"></animate>
+        </circle>
+        <circle fill="currentColor" stroke="currentColor" stroke-width="10" r="5" cx="60" cy="100">
+          <animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1"
+            repeatCount="indefinite" begin="-.2"></animate>
+        </circle>
+        <circle fill="currentColor" stroke="currentColor" stroke-width="10" r="5" cx="100" cy="100">
+          <animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1"
+            repeatCount="indefinite" begin="0"></animate>
+        </circle>
+      </svg>
+      <p>Processing please wait</p>
+    </div>
+  </section>
+  <section id="fileUploadContainer" class="file-upload-container">
+
+
+    <div class="footer-links">
+      <p>
+        Created by
+        <a target="_blank" href="https://jeigsaw.xyz/">Jeigsaw</a> 2026. View
+        on
+        <a target="_blank" href="https://github.com/Jeigsaw/network-motif">github</a>.
+      </p>
+    </div>
+  </section>
+
+  <div class="content">
+    <section class="graph-info">
+      <div class="branding">
+        <h1>M3</h1>
+        <p>3-Node Motif</p>
+      </div>
+      <div class="file-upload" id="fileUploadDialog">
+        <p>Please upload a network data to proceed. </p>
+        <label for="upload">
+          <svg width="32" height="32" viewBox="0 0 24 24">
+            <!-- Icon from Unicons by Iconscout - https://github.com/Iconscout/unicons/blob/master/LICENSE -->
+            <path fill="currentColor"
+              d="M13 20H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5v3a3 3 0 0 0 3 3h3v2a1 1 0 0 0 2 0V8.94a1.3 1.3 0 0 0-.06-.27v-.09a1 1 0 0 0-.19-.28l-6-6a1 1 0 0 0-.28-.19a.3.3 0 0 0-.09 0a.9.9 0 0 0-.33-.11H6a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h7a1 1 0 0 0 0-2m0-14.59L15.59 8H14a1 1 0 0 1-1-1ZM8 8a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm6 4H8a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2m6.71 5.29l-2-2a1 1 0 0 0-.33-.21a1 1 0 0 0-.76 0a1 1 0 0 0-.33.21l-2 2a1 1 0 0 0 1.42 1.42l.29-.3V21a1 1 0 0 0 2 0v-2.59l.29.3a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.42M12 18a1 1 0 0 0 0-2H8a1 1 0 0 0 0 2Z" />
+          </svg>
+          <p>Click to upload a file!</p>
+        </label>
+        <input type="file" id="upload" accept=".txt" />
+        <p class="info small-font">TXT file with network data</p>
+        <p class="small-font">
+          Some of the network data can be accessed from
+          <a target="_blank" href="https://www.weizmann.ac.il/mcb/alon/download/collection-complex-networks">Uri Alon
+            Lab, Weizmann Institute of Science</a>
+        </p>
+      </div>
+
+      <div id="fileInfoDialog">
+
+        <div class="file-info">
+          <div>
+            <svg width="52" height="52"
+              viewBox="0 0 24 24"><!-- Icon from IconaMoon by Dariush Habibpour - https://creativecommons.org/licenses/by/4.0/ -->
+              <g fill="none" stroke="#909090" stroke-linejoin="round" stroke-width="1.5">
+                <path stroke-linecap="round" d="M7 21a2 2 0 0 1-2-2V3h9l5 5v11a2 2 0 0 1-2 2z" />
+                <path d="M13 3v6h6" />
+                <path stroke-linecap="round" d="M9 13h6m-6 4h6" />
+              </g>
+            </svg>
+          </div>
+          <div>
+            <p>Current Network</p>
+            <h3>Name of the graph</h3>
+          </div>
+        </div>
+        <div class="network-stat">
+          <p>Network stats</p>
+          <p>Nodes: 20</p>
+          <p>Edges: 40</p>
+          <!--<p>Total 3-node Subgraphs count: 310</p>-->
+        </div>
+        <div class="action-bar">
+          <button id="countSubgraphBtn">Count Subgraphs</button>
+          <!--<button id="genRandomBtn">Generate Random model</button>-->
+        </div>
+      </div>
+    </section>
+    <section class="subgraphs-container" id="subgraphWindow">
+      <h3 class="section-heading">Subgraphs Count</h3>
+      <div class="subgraphs">
+        <div class="subgraph" id="subgraph-0">
+          <p class="subgraph-no">#1</p>
+          <div class="subgraph-image">
+            <svg width="100%" height="100%" viewBox="0 0 196 177" fill="none">
+              <path d="M43.0835 119.307L85.7242 44.9791" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M35.9687 116.667L37.4947 129.047L48.9582 124.115L35.9687 116.667Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M152.213 118.281L109.776 44.9323" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M146.359 123.109L157.839 128L159.318 115.609L146.359 123.109Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <circle cx="98" cy="24" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="24" cy="152" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="171" cy="152" r="24" class="node" fill="#5A5A5A" />
+            </svg>
+          </div>
+          <div class="subgraph-stat">
+            <p>Count: 1</p>
+          </div>
+        </div>
+        <div class="subgraph" id="subgraph-1">
+          <p class="subgraph-no">#2</p>
+          <div class="subgraph-image">
+            <svg width="100%" height="100%" viewBox="0 0 196 177" fill="none">
+              <path d="M36.2555 131.214L78.8961 56.8802" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M73.0263 52.0729L84.4847 47.1406L86.0107 59.5261L73.0263 52.0729Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M159.089 130.161L116.646 56.8125" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M109.541 59.4792L111.021 47.0938L122.5 51.9844L109.541 59.4792Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <circle cx="98" cy="24" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="24" cy="152" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="171" cy="151" r="24" class="node" fill="#5A5A5A" />
+            </svg>
+          </div>
+          <div class="subgraph-stat">
+            <p>Count: 1</p>
+          </div>
+        </div>
+        <div class="subgraph" id="subgraph-2">
+          <p class="subgraph-no">#3</p>
+          <div class="subgraph-image">
+            <svg width="100%" height="100%" viewBox="0 0 196 177" fill="none">
+              <path d="M36.2555 131.214L78.8961 56.8802" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M73.0263 52.0729L84.4847 47.1406L86.0107 59.5261L73.0263 52.0729Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M152.213 118.281L109.776 44.9323" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M146.359 123.109L157.839 128L159.318 115.609L146.359 123.109Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <circle cx="98" cy="24" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="24" cy="152" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="171" cy="151" r="24" class="node" fill="#5A5A5A" />
+            </svg>
+          </div>
+          <div class="subgraph-stat">
+            <p>Count: 1</p>
+          </div>
+        </div>
+        <div class="subgraph" id="subgraph-3">
+          <p class="subgraph-no">#4</p>
+          <div class="subgraph-image">
+            <svg width="100%" height="100%" viewBox="0 0 196 177" fill="none">
+              <path d="M36.2555 131.214L78.8961 56.8802" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M73.0263 52.0729L84.4847 47.1406L86.0107 59.5261L73.0263 52.0729Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M152.213 118.281L116.646 56.8125" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M146.359 123.109L157.839 128L159.318 115.609L146.359 123.109Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M109.541 59.4792L111.021 47.0938L122.5 51.9844L109.541 59.4792Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <circle cx="98" cy="24" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="24" cy="152" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="171" cy="151" r="24" class="node" fill="#5A5A5A" />
+            </svg>
+          </div>
+          <div class="subgraph-stat">
+            <p>Count: 1</p>
+          </div>
+        </div>
+        <div class="subgraph" id="subgraph-4">
+          <p class="subgraph-no">#5</p>
+          <div class="subgraph-image">
+            <svg width="100%" height="100%" viewBox="0 0 196 177" fill="none">
+              <path d="M43.0835 119.307L78.896 56.8802" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M35.9687 116.667L37.4947 129.047L48.9582 124.115L35.9687 116.667Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M73.0263 52.0729L84.4847 47.1406L86.0107 59.5261L73.0263 52.0729Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M152.213 118.281L109.776 44.9323" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M146.359 123.109L157.839 128L159.318 115.609L146.359 123.109Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <circle cx="98" cy="24" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="24" cy="152" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="171" cy="151" r="24" class="node" fill="#5A5A5A" />
+            </svg>
+          </div>
+          <div class="subgraph-stat">
+            <p>Count: 1</p>
+          </div>
+        </div>
+        <div class="subgraph" id="subgraph-5">
+          <p class="subgraph-no">#6</p>
+          <div class="subgraph-image">
+            <svg width="100%" height="100%" viewBox="0 0 196 177" fill="none">
+              <path d="M43.0835 119.307L78.896 56.8802" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M35.9687 116.667L37.4947 129.047L48.9582 124.115L35.9687 116.667Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M73.0263 52.0729L84.4847 47.1406L86.0107 59.5261L73.0263 52.0729Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M152.213 118.281L116.646 56.8125" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M146.359 123.109L157.839 128L159.318 115.609L146.359 123.109Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M109.541 59.4792L111.021 47.0938L122.5 51.9844L109.541 59.4792Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <circle cx="98" cy="24" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="24" cy="152" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="171" cy="151" r="24" class="node" fill="#5A5A5A" />
+            </svg>
+          </div>
+          <div class="subgraph-stat">
+            <p>Count: 1</p>
+          </div>
+        </div>
+        <div class="subgraph" id="subgraph-6">
+          <p class="subgraph-no">#7</p>
+          <div class="subgraph-image">
+            <svg width="100%" height="100%" viewBox="0 0 196 177" fill="none">
+              <path d="M134.112 159.049L144.039 151.486L134.003 144.075L134.112 159.049Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M43.0833 119.307L85.7239 44.9792" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M35.9687 116.667L37.4947 129.047L48.9582 124.115L35.9687 116.667Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M152.213 118.281L109.776 44.9323" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M146.359 123.109L157.839 128L159.318 115.609L146.359 123.109Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M47.7036 151.256L136.049 151.256" stroke="black" stroke-width="4.9906" class="edge" />
+              <circle cx="98" cy="24" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="24" cy="152" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="171" cy="152" r="24" class="node" fill="#5A5A5A" />
+            </svg>
+          </div>
+          <div class="subgraph-stat">
+            <p>Count: 1</p>
+          </div>
+        </div>
+        <div class="subgraph" id="subgraph-7">
+          <p class="subgraph-no">#8</p>
+          <div class="subgraph-image">
+            <svg width="100%" height="100%" viewBox="0 0 196 177" fill="none">
+              <path d="M134.112 159.049L144.039 151.486L134.003 144.075L134.112 159.049Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M43.0835 119.307L85.7242 44.9792" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M35.9687 116.667L37.4947 129.047L48.9582 124.115L35.9687 116.667Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M159.089 130.161L116.646 56.8125" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M109.541 59.4792L111.021 47.0938L122.5 51.9844L109.541 59.4792Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M47.9604 152.256L135.049 152.256" stroke="black" stroke-width="4.9906" class="edge" />
+              <circle cx="98" cy="24" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="24" cy="152" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="171" cy="152" r="24" class="node" fill="#5A5A5A" />
+            </svg>
+          </div>
+          <div class="subgraph-stat">
+            <p>Count: 1</p>
+          </div>
+        </div>
+        <div class="subgraph" id="subgraph-8">
+          <p class="subgraph-no">#9</p>
+          <div class="subgraph-image">
+            <svg width="100%" height="100%" viewBox="0 0 196 177" fill="none">
+              <path d="M43.0835 119.307L85.7242 44.9792" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M35.9687 116.667L37.4947 129.047L48.9582 124.115L35.9687 116.667Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M152.213 118.281L109.776 44.9323" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M146.359 123.109L157.839 128L159.318 115.609L146.359 123.109Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M134.651 158.776L144.578 151.214L134.542 143.802L134.651 158.776Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M60.8853 159.328L50.8488 151.917L60.7707 144.354L60.8853 159.328Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M58 152.256L135.049 152.256" stroke="black" stroke-width="4.9906" class="edge" />
+              <circle cx="98" cy="24" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="24" cy="152" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="171" cy="152" r="24" class="node" fill="#5A5A5A" />
+            </svg>
+          </div>
+          <div class="subgraph-stat">
+            <p>Count: 1</p>
+          </div>
+        </div>
+        <div class="subgraph" id="subgraph-9">
+          <p class="subgraph-no">#10</p>
+          <div class="subgraph-image">
+            <svg width="100%" height="100%" viewBox="0 0 196 177" fill="none">
+              <path d="M36.2555 131.214L78.8961 56.8802" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M73.0263 52.0729L84.4847 47.1406L86.0107 59.5261L73.0263 52.0729Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M159 131L116.646 56.8125" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M109.541 59.4792L111.021 47.0938L122.5 51.9844L109.541 59.4792Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M134.651 159.049L144.578 151.486L134.542 144.075L134.651 159.049Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M60.8853 159.328L50.8488 151.917L60.7707 144.354L60.8853 159.328Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M61 152.256L138.049 152.256" stroke="black" stroke-width="4.9906" class="edge" />
+              <circle cx="98" cy="24" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="24" cy="152" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="171" cy="152" r="24" class="node" fill="#5A5A5A" />
+            </svg>
+          </div>
+          <div class="subgraph-stat">
+            <p>Count: 1</p>
+          </div>
+        </div>
+        <div class="subgraph" id="subgraph-10">
+          <p class="subgraph-no">#11</p>
+          <div class="subgraph-image">
+            <svg width="100%" height="100%" viewBox="0 0 196 177" fill="none">
+              <path d="M43.0833 119.307L85.7239 44.9792" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M48 152L138 152" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M35.9687 116.667L37.4947 129.047L48.9582 124.115L35.9687 116.667Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M152.213 118.281L116.646 56.8125" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M146.359 123.109L157.839 128L159.318 115.609L146.359 123.109Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M109.541 59.4792L111.021 47.0938L122.5 51.9844L109.541 59.4792Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M134.651 159.049L144.578 151.486L134.542 144.075L134.651 159.049Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <circle cx="98" cy="24" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="24" cy="152" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="171" cy="152" r="24" class="node" fill="#5A5A5A" />
+            </svg>
+          </div>
+          <div class="subgraph-stat">
+            <p>Count: 1</p>
+          </div>
+        </div>
+        <div class="subgraph" id="subgraph-11">
+          <p class="subgraph-no">#12</p>
+          <div class="subgraph-image">
+            <svg width="100%" height="100%" viewBox="0 0 196 177" fill="none">
+              <path d="M36.2555 131.214L78.8961 56.8802" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M73.0263 52.0729L84.4847 47.1406L86.0107 59.5261L73.0263 52.0729Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M152.213 118.281L116.646 56.8125" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M146.359 123.109L157.839 128L159.318 115.609L146.359 123.109Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M109.541 59.4792L111.021 47.0938L122.5 51.9844L109.541 59.4792Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M134.112 159.049L144.039 151.486L134.003 144.075L134.112 159.049Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M60.8853 159.328L50.8488 151.917L60.7707 144.354L60.8853 159.328Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M61 152.256L138.049 152.256" stroke="black" stroke-width="4.9906" class="edge" />
+              <circle cx="98" cy="24" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="24" cy="152" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="171" cy="152" r="24" class="node" fill="#5A5A5A" />
+            </svg>
+          </div>
+          <div class="subgraph-stat">
+            <p>Count: 1</p>
+          </div>
+        </div>
+        <div class="subgraph" id="subgraph-12">
+          <p class="subgraph-no">#13</p>
+          <div class="subgraph-image">
+            <svg width="100%" height="100%" viewBox="0 0 196 177" fill="none">
+              <path d="M43.0835 119.307L78.896 56.8802" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M35.9687 116.667L37.4947 129.047L48.9582 124.115L35.9687 116.667Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M73.0263 52.0729L84.4847 47.1406L86.0107 59.5261L73.0263 52.0729Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M152.213 118.281L116.646 56.8125" stroke="black" stroke-width="4.9906" class="edge" />
+              <path d="M146.359 123.109L157.839 128L159.318 115.609L146.359 123.109Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M109.541 59.4792L111.021 47.0938L122.5 51.9844L109.541 59.4792Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M134.651 159.049L144.578 151.486L134.542 144.075L134.651 159.049Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M60.8853 159.328L50.8488 151.917L60.7707 144.354L60.8853 159.328Z" fill="black" stroke="black"
+                stroke-width="4.9906" stroke-linecap="round" stroke-linejoin="round" class="arrow-head" />
+              <path d="M57 152.256L134.049 152.256" stroke="black" stroke-width="4.9906" class="edge" />
+              <circle cx="98" cy="24" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="24" cy="152" r="24" class="node" fill="#5A5A5A" />
+              <circle cx="171" cy="152" r="24" class="node" fill="#5A5A5A" />
+            </svg>
+          </div>
+          <div class="subgraph-stat">
+            <p>Count: 1</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script type="module" src="main.js"></script>
+</body>
+
+</html>
