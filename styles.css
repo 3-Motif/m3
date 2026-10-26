@@ -46,7 +46,7 @@ p {
 
 .file-upload label {
   cursor: pointer;
-  border: 2px dashed #798eac;
+  border: 2px dashed #b8a377;
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -60,7 +60,9 @@ p {
 .file-upload label svg {
   height: 100px;
   width: 100px;
-  color: #435e84;
+  /* color: #435e84; */
+  color: #c1aa7b;
+
 }
 
 .file-upload input[type="file"] {
@@ -72,14 +74,14 @@ p {
 }
 
 .file-upload .info {
-  background: #435e84;
+  background: #586579;
   padding: 0.15rem 0.5rem;
   border-radius: 6px;
   color: #f0f6ff;
   margin: 0;
   font-family: sans-serif;
   font-weight: 360;
-  font-size: 0.4rem;
+  font-size: 0.75rem;
   margin-bottom: 2rem;
 }
 
@@ -120,23 +122,36 @@ p {
 }
 
 .branding {
+  margin-top: 0.5rem;
   margin-bottom: 2rem;
 }
 .branding h1 {
   font-family: "Bitcount Prop Single", system-ui;
-  font-size: 3.5rem;
-  font-weight: 900;
+  font-size: 4rem;
+  font-weight: 500;
   line-height: 2rem;
   color: #777777;
 }
 .branding p {
   color: #767676;
+  margin-left: -5px;
 }
 .file-info {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   gap: 0.5rem;
   margin: 1rem 0;
+  flex-direction: row;
+  justify-content: space-between;
+  background: #c9c8c261;
+  padding: 0.25rem;
+  padding-right: 0.75rem;
+  border-radius: 4px;
+}
+.file-info .file-name{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
 }
 .file-info p {
   font-size: 1rem;
@@ -146,6 +161,10 @@ p {
 }
 .file-info h3 {
   line-height: 1.5;
+  text-overflow: ellipsis;
+  width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .network-stat {
   padding-left: 0.5rem;
@@ -188,7 +207,7 @@ p {
   display: grid;
   justify-content: center;
   align-items: center;
-  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
   gap: 0.5rem;
 }
 
@@ -270,6 +289,22 @@ button.ghost{
   border: 2px solid #dac293;
   font-size: 0.75rem;
 }
+
+button.icon-button{
+  padding: 0.1rem;
+  border-radius: 5px;
+}
+
+button.danger{
+  background-color: #dd5d5d;
+  color: #f1f1f1;
+}
+button.danger:hover{
+  background-color: #f76464;
+  transition: all 0.2s ease-in-out;
+}
+
+
 
 .graph-viz{
   background-color: #e4ebf0;

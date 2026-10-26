@@ -46,6 +46,16 @@ document.getElementById("upload").addEventListener("change", async (event) => {
   spinner.style.display = "none";
   fileUploadDialog.style.display = "none";
   fileInfoDialog.style.display = "block";
+
+  closeGraph.addEventListener('click', (event)=>{
+    // reset everything
+    graphCanvasSection.style.display = "none";
+    fileInfoDialog.style.display = "none";
+    subgraphWindow.style.display = "none";
+    fileUploadDialog.style.display = "flex";
+    countSubgraphBtn.disabled = false;
+    networkViz.destroy();
+  })
 });
 
 countSubgraphBtn.addEventListener("click", (event) => {

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>M3 | A 3-node Motif finder</title>
+  <title>M3 | Three-node Motif Enumeration</title>
   <meta name="description" content="An webapp for enumerating 3-node motifs from a given graph/network." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -69,16 +69,15 @@
         <input type="file" id="upload" accept=".txt" />
         <p class="info small-font">TXT file with network data</p>
         <p class="small-font">
-          Some of the network data can be accessed from
-          <a target="_blank" href="https://www.weizmann.ac.il/mcb/alon/download/collection-complex-networks">Uri Alon
-            Lab, Weizmann Institute of Science</a>
+          Sample network data can be found
+          <a target="_blank" href="https://github.com/3-Motif/network-data">here</a>
         </p>
       </div>
 
       <div id="fileInfoDialog">
 
         <div class="file-info">
-          <div>
+          <div class="file-name">
             <svg width="52" height="52"
               viewBox="0 0 24 24"><!-- Icon from IconaMoon by Dariush Habibpour - https://creativecommons.org/licenses/by/4.0/ -->
               <g fill="none" stroke="#909090" stroke-linejoin="round" stroke-width="1.5">
@@ -87,14 +86,17 @@
                 <path stroke-linecap="round" d="M9 13h6m-6 4h6" />
               </g>
             </svg>
+            <div>
+              <p>Current Network</p>
+              <h3 id="fileName">Name of the graph</h3>
+            </div>
           </div>
-          <div>
-            <p>Current Network</p>
-            <h3 id="fileName">Name of the graph</h3>
-          </div>
+          <button id="closeGraph" class="icon-button danger">
+            <svg width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m12 13.4l-2.9 2.9q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7l2.9-2.9l-2.9-2.875q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l2.9 2.9l2.875-2.9q.275-.275.7-.275t.7.275q.3.3.3.713t-.3.687L13.375 12l2.9 2.9q.275.275.275.7t-.275.7q-.3.3-.712.3t-.688-.3z"/></svg>
+          </button>
         </div>
         <div class="network-stat">
-          <p>Network stats</p>
+          <p style="text-decoration: underline;">Network stats</p>
           <p id="nodeCount">Nodes: 20</p>
           <p id="edgeCount">Edges: 40</p>
           <!--<p>Total 3-node Subgraphs count: 310</p>-->
